@@ -1,3 +1,4 @@
+/************* General *************/
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -16,173 +17,377 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+
+* {
+    box-sizing: border-box;
+}
+
+/* HTML5 display-role reset for older browsers */ 
+/** end reset css**/
+
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
+
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
+
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
-/** end reset css**/
+
+/************* HOME PAGE ************/
+/************* General *************/
+
 body {
-	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
-	font-size: 14px;
-}
-header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
-}
-section {
-	margin: 50px 0
+    line-height: 1;
+    
+    margin: auto;
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-size: 0.875em;
+    background-color: rgb(246, 246, 235);
 }
 
-h1{
-	display: flex;
-	flex-direction: column;
-	font-family: 'Syne';
-	font-size: 22px;
-	font-weight: 800;
-	color: #B1663C
+ul {
+    list-style: none;
 }
 
-h1 > span {
-	font-family: 'Work Sans';
-	font-size:10px;
-	letter-spacing: 0.1em;
-;
+h2 {
+    font-family: 'Syne';
+    font-weight: 700;
+    font-size: 2.2em;
+    color: #1D6154;
+    line-height: 36px;
 }
 
-h2{
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 30px;
-	color: #1D6154
+li a:hover, .user-login-formulary a:hover, #top-bar a:hover, .container-only-admin a:hover,
+.update-btn:hover {
+    color: #B1663C;
 }
+
+a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.insta-logo {
+    width: 19px;
+    height: 19px;
+    margin-top: 5px;
+}
+
+input[type="submit"]:hover, button:hover {
+    cursor: pointer;
+}
+
+#introduction p, #contact label, #contact p, .gallery figcaption, .user-login-formulary label, 
+.user-login-formulary a, #modal-edit-work-form label {
+    color: #3D3D3D;
+}
+
+h1 > span, #introduction p, .gallery figcaption, #contact p, nav a, .modal-title, .modal-delete-all,
+.modal-content-new-photo p {
+    font-weight: 400;
+}
+
+#contact label, .user-login-formulary label, .user-login-formulary a, #modal-edit-work-form #new-image,
+.modal-content-new-category-title label {
+    font-weight: 500;
+}
+
+h1 .name-of-designer, .filters-design, #contact input[type="submit"], .user-login-formulary input[type="submit"],
+.modal-delete-all, #modal-edit-work-form input[type="submit"] {
+    font-family: 'Syne';
+}
+
+.user-login-formulary input[type="submit"], #portfolio .filter-active, #contact input[type="submit"], .modal-add {
+    background-color: #1D6154;
+}
+
+#introduction p, #contact label, footer li a, .user-login-formulary label, .user-login-formulary a {
+    line-height: 16px;
+}
+
+#contact form, #contact > *, .user-login-formulary form, .user-login-formulary h2 {
+    min-width: 200px;
+}
+
+.only-guest {
+    display:block;
+}
+
+.only-admin {
+    display:none;
+}
+
+/************* Navigation *************/
+
+.nav-for-user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 50px 50px 0 50px;
+}
+
+h1 {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 .name-of-designer {
+    font-weight: 800;
+    font-size: 1.6em;
+    line-height: 26px;
+    color: #B1663C;
+}
+
+h1 .job-of-designer {
+    font-size: 0.680em;
+    line-height: 12px;
+    letter-spacing: 0.1em;
+    margin-top: 5px;
+    color: #B1663C;
+}
+
 nav ul {
-	display: flex;
-	align-items: center;
-	list-style-type: none;
-
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
+
 nav li {
-	padding: 0 10px;
-	font-size: 1.2em;
+    padding-left: 50px;
 }
 
-li:hover {
-	color: #B1663C;
+nav a {
+    font-size: 1.15em;
+    line-height: 19px;
 }
+
+/************* Introduction *************/
+
 #introduction {
-	display: flex;
-	align-items: center;
-}
-#introduction figure {
-	flex: 1
-}
-#introduction img {
-	display: block;
-	margin: auto;
-	width: 80%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 130px 350px 140px 150px;
 }
 
-#introduction article {
-	flex: 1
+#introduction img {
+    width: 115%;
 }
+
+#introduction div {
+    width: 43%;
+}
+
 #introduction h2 {
-	margin-bottom: 1em;
+    margin-bottom: 20px;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+    margin-bottom: 15px;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
+
+#introduction #update-description {
+    padding-bottom: 20px;
 }
+
+#introduction #update-img {
+    padding-top: 15px;
+}
+
+/************* Portfolio *************/
+
+#portfolio {
+    padding: 0 150px 60px 150px;
+}
+
+/************* Portfolio filtres *************/
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.filters-design {
+    margin-left: 10px;
+    border: 1px solid #1D6154;
+    border-radius: 60px;
+    font-size: 1.15em;
+    color: #1D6154;
+    background-color: rgb(246, 246, 235);
+    padding: 7px 15px;
+}
+
+.filter-active {
+    color: #FFFFFF;
+}
+
+.filter-all {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+/************* Gallery *************/
+
 .gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 15px;
 }
 
 .gallery img {
-	width: 100%;
+    width: 95%;
+}
 
+.gallery figcaption {
+    font-size: 0.930em;
+    line-height: 15px;
+    padding-top: 7px;
 }
-#contact {
-	width: 50%;
-margin: auto;
-}
-#contact > * {
-	text-align: center;
 
-}
-#contact h2{
-	margin-bottom: 20px;
-}
+/************* Contact *************/
+
 #contact form {
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#contact > * {
+    text-align: center;
+}
+
+#contact {
+    width: 50%;
+    margin: auto;
+    padding: 0 170px;
+}
+
+#contact h2 {
+    margin-bottom: 10px;
+}
+
+#contact p {
+    font-size: 1.15em;
+    line-height: 19px;
 }
 
 #contact input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label {
-	margin: 2em 0 1em 0;
-}
-#contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
+#contact label {
+    margin: 40px 0 10px 0;
 }
+
+#contact textarea {
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#contact input[type="submit"] {
+    height: 36px;
+    margin : 30px auto 50px ;
+    text-align: center;
+    border: none;
+    border-radius: 60px ;
+    padding: 10px 60px;
+    font-size: 1em;
+    color: white;
+    font-weight: 700;
+}
+
+/************* Footer *************/
 
 footer nav ul {
-	display: flex;
-	justify-content: flex-end;
-	margin: 2em
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 25px 100px 20px 0;
+    background-color: #FFFFFF;
 }
 
+footer li a {
+    font-weight: 300;
+    font-size: 1em;
+}
+
+@media screen and (max-width:1240px) {
+    
+ #introduction {
+    padding: 130px 200px 140px 100px;
+ }
+ #introduction div {
+    width: 45%;
+ }
+ #introduction h2 {
+    margin-bottom: 5px;
+ }
+ #introduction p {
+    margin-bottom: 5px;
+ }
+ #introduction #update-description {
+    padding-bottom: 10px;
+ }
+ #portfolio {
+    padding: 0 100px 60px 100px;
+ }
+}
+
+/************* Mode édition *************/
+/************* Barre de navigation *************/
+
+.top-bar-design {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+    height: 60px;
+    background-color: #000000;
+}
+
+.top-bar-design li {
+    padding-left: 10px;
+}
+
+.top-bar-design i {
+    padding-right: 10px;
+    font-size: 16px;
+}
+
+.top-bar-design a {
+    color: #FFFFFF;
+}
+
+.top-bar-design .publish-btn {
+    background: #FFFFFF;
+    border-radius: 60px;
+    color: #000000;
+    padding: 9px 23px ;
+}
