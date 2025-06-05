@@ -1,3 +1,5 @@
+// ----------- Récupération des oeuvres et des catégories ----------- //
+
 const gallery = document.querySelector(".gallery");                        // Sélectionne l'élément gallery dans le DOM
 
 async function fetchWorks() {                                              // Fonction pour récupérer les travaux depuis l'API
@@ -66,6 +68,8 @@ async function fetchAndDisplayCategories() {
 }
 fetchAndDisplayCategories();                                                                        // Appel de la fonction pour lancer la récupération et l’affichage des filtres
 
+// ----------- Partie connexion/déconnexion ----------- //
+// Gestion du TOKEN
 document.addEventListener('DOMContentLoaded', async function() {                                    // Quand tout le DOM est chargé, on exécute cette fonction asynchrone
   if(localStorage.getItem('token') != null && localStorage.getItem('userId') != null) {             // Vérifie si un token et un userId sont stockés dans localStorage (utilisateur connecté)
     document.querySelector('body').classList.add('connected');                                      // Ajoute la classe 'connected' au body pour modifier l’apparence en mode admin
@@ -78,6 +82,8 @@ document.addEventListener('DOMContentLoaded', async function() {                
     let introduction = document.getElementById('space-introduction-in-mode-admin');                 // Sélectionne l’introduction spécifique au mode admin
     introduction.style.marginTop = "-50px";                                                         // Remonte l’introduction vers le haut (-50px de margin-top)
   }
+
+// Click sur déconnection pour se déconnecter
   document.getElementById('nav-logout').addEventListener('click', async function(event) {           // Ajoute un écouteur d'événement sur le bouton déconnexion
     event.preventDefault();                                                                         // Empêche le comportement par défaut du clic (ex: navigation)
     localStorage.removeItem('userId');                                                              // Supprime userId du localStorage pour déconnecter l’utilisateur
