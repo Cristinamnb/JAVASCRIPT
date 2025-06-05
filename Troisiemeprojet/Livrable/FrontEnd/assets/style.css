@@ -492,3 +492,222 @@ body.connected .only-admin {
 	background-color: rgba(0, 0, 0, 0.3);
 	display: none;
 }
+
+/************* Première fenêtre modal *************/
+
+.modal-gallery {
+    width: 44%;
+    height: 730px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: none;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 45px 90px 45px 100px;
+    gap: 10px;
+}
+
+.modal-content figure {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content img {
+    width: 80px;
+}
+
+.modal-content .work-item .trash, .modal-content .work-item .cross {
+    margin-top: 5px;
+    color: #FFFFFF;
+    background: #000000;
+    border-radius: 2px;
+    text-align: center;
+    position: absolute;
+}
+
+.modal-content .work-item .trash {
+    margin-left: 60px;
+    padding: 4px;
+    font-size: 9px;
+}
+
+.modal-content .work-item .cross {
+    margin-left: 40px;
+    padding: 3.5px;
+    font-size: 10px;
+}
+
+.modal-content .work-item .cross {
+    display: none;
+}
+
+.modal-content .work-item:hover .cross {
+    display: flex;
+}
+
+.modal-content .work-item:hover {
+    cursor: pointer;
+}
+
+.modal-content figcaption {
+    padding-top: 5px;
+}
+
+.modal-close {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 30px;
+    padding-top: 30px;
+    font-size: 15px;
+}
+
+.modal-title {
+    font-size: 1.860em;
+    line-height: 30px;
+    text-align: center;
+    padding-top: 15px;
+}
+
+hr {
+    margin: 0 105px;
+    border-top: 1px solid #B3B3B3;
+    border-bottom: 0; 
+    border-left: 0;
+    border-right: 0;
+}
+
+.container-modal-add-and-modal-delete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.modal-add {
+    border: none;
+    border-radius: 60px;
+    color: #FFFFFF;
+    padding: 10px 49px;
+    font-family: 'Syne';
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.modal-delete-all {
+    font-size: 1em;
+    line-height: 17px;
+    color: #D65353;
+    padding-top: 20px;
+}
+
+/************* Seconde fenêtre modal *************/
+
+.modal-edit-work {
+    width: 630px;
+    height: 670px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: none;
+}
+
+.modal-edit-work .container-for-icon-in-second-window-of-modal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 30px 30px 0 30px;
+    font-size: 15px;
+}
+
+#modal-edit-work-form .modal-content-new-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0 19px 0;
+    background-color: #E8F1F7;
+    border-radius: 3px;
+    margin: 35px 105px 0 105px;
+}
+
+.modal-content-new-photo i {
+    font-size: 58px;
+    color: #B9C5CC;
+    padding-bottom: 20px;
+}
+
+.modal-content-new-photo #new-image {
+    background-color: #CBD6DC;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Work Sans';
+    font-size: 1em;
+    line-height: 16px;
+    color: #306685;
+    text-align: center;
+    padding: 10px 33px;
+    cursor: pointer;
+}
+
+.modal-content-new-photo #form-image {
+    margin-top: -36px;
+    width: 173px;
+    padding: 8px 0;
+    border: none;
+    border-radius: 50px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.modal-content-new-photo p {
+    font-size: 0.750em;
+    line-height: 12px;
+    color: #444444;
+    padding-top: 7px;
+}
+
+#modal-edit-work-form .modal-content-new-category-title {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 10px 105px 0 105px;
+}
+
+.modal-content-new-category-title input[type="text"], select {
+    height: 51px;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    border: none;
+}
+
+.modal-content-new-category-title #form-title, #form-category {
+    color: #444444;
+    padding-left: 16px;
+    font-family: 'Work Sans';
+    font-size: 1em;
+}
+
+.modal-content-new-category-title label {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.modal-content-new-category-title .border-in-second-window-of-modal {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 45px;
+}
+
+#modal-edit-work-form input[type="submit"] {
+    border-radius: 60px;
+    margin: 30px auto 45px;
+    padding: 10px 90px;
+    border: none;
+    color: #FFFFFF;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1em;
+    background-color: #A7A7A7;
+}
