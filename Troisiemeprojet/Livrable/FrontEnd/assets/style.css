@@ -360,8 +360,8 @@ footer li a {
  }
 }
 
-/************* Mode édition *************/
-/************* Barre de navigation *************/
+/************* Mode identifié *************/
+/************* Barre de navigation - Mode édition *************/
 
 .top-bar-design {
     display: flex;
@@ -370,6 +370,7 @@ footer li a {
     width: auto;
     height: 60px;
     background-color: #000000;
+	display: none;
 }
 
 .top-bar-design li {
@@ -391,6 +392,31 @@ footer li a {
     color: #000000;
     padding: 9px 23px ;
 }
+
+body.connected .only-guest {
+    display:none;
+}
+
+body.connected .only-admin {
+    display:block;
+}
+
+
+/************* Mes projets - Modifié *************/
+
+.container-only-admin {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.update-btn i {
+    padding-right: 10px;
+    font-size: 20px;
+}
+
 
 /************* Page login *************/
 /************* Formulaire *************/
