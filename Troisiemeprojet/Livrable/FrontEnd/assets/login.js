@@ -1,67 +1,64 @@
-// Exécution du code JavaScript une fois que tout le HTML est chargé
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {                                             // Attend que le DOM soit complètement chargé avant d'exécuter le script
+    document.getElementById('user-login-form').addEventListener('submit', async function (event) {      // Ajoute un écouteur d'événement sur la soumission du formulaire de connexion
+        event.preventDefault();                                                                         // Empêche le comportement par défaut du formulaire (rechargement de la page)
+        const errorEl = document.querySelector('.error');                                               // Sélectionne l'élément contenant un message d'erreur, s'il existe
+        if (errorEl) {                                                                                  // Vérifie si l'élément d'erreur existe dans le DOM
+            errorEl.classList.add('not-error');                                                         // Ajoute une classe CSS pour masquer le message d'erreur
+        }
+        const user = {                                                                                  // Crée un objet contenant les informations de connexion saisies
+            email: document.querySelector('#email').value,                                              // Récupère la valeur du champ email
+            password: document.querySelector('#password').value                                         // Récupère la valeur du champ mot de passe
+        };
 
-	// Ajout d'un écouteur d'événement sur la soumission du formulaire de connexion
-	document.getElementById('user-login-form').addEventListener('submit', function(event) {
-		// Empêche le rechargement de la page lors de la soumission du formulaire
-		event.preventDefault();
+        try {                                                                                           // Tente d'exécuter une requête HTTP et de traiter la réponse
+            const response = await fetch('http://localhost:5678/api/users/login', {                     // Envoie une requête POST à l'API de connexion avec les identifiants
+                method: 'POST',                                                                         // Utilise la méthode POST pour envoyer les données
+                headers: {
+                    'Content-Type': 'application/json'                                                  // Indique que le corps de la requête est au format JSON
+                },
+                body: JSON.stringify(user)                                                              // Convertit l'objet `user` en chaîne JSON pour l'envoi
+            });
 
-		// Récupération des données saisies par l'utilisateur dans le formulaire
-		const user = {
-			email: document.querySelector('#email').value,      // Champ email
-			password: document.querySelector('#password').value // Champ mot de passe
-		};
+            let data;                                                                                   // Variable pour stocker les données de la réponse si tout se passe bien
+            switch (response.status) {                                                                  // Vérifie le code de statut HTTP pour déterminer l'action à effectuer
 
-		// Envoi de la requête POST vers l'API pour authentifier l'utilisateur
-		fetch('http://localhost:5678/api/users/login', {
-			method: 'POST', // Méthode HTTP
-			headers: {
-				'Content-Type': 'application/json' // Type de contenu envoyé
-			},
-			body: JSON.stringify(user) // Conversion de l'objet utilisateur en JSON
-		})
-		.then(function(response) {
-			// Vérification du statut de la réponse pour gérer les différents cas
-			
-            switch(response.status) {
-				case 500:
-				case 503:
-					// Erreur côté serveur (ex: API indisponible)
-					alert("Erreur côté serveur!");
-					break;
+                case 500:
+                case 503:
+                    alert("Erreur côté serveur!");                                                      // Alerte l'utilisateur en cas d'erreur serveur
+                    break;
 
-				case 401:
-				case 404:
-					// Identifiants incorrects ou utilisateur non trouvé
-					const formEl = document.getElementById('user-login-form');
-                    const errorEl = formEl.nextSibling;
-                    errorEl.classList.remove("not-error");
-					break;
+                case 401:
+                case 404:
+                    const formEl = document.getElementById('user-login-form');                          // Récupère le formulaire de connexion
+                    const errorEl = formEl.nextElementSibling;                                          // Récupère l'élément juste après le formulaire (ex: le paragraphe d'erreur)
+                    if (errorEl && errorEl.classList.contains('error')) {                               // Vérifie si c’est bien un message d’erreur
+                        errorEl.classList.remove("not-error");                                          // Affiche le message d’erreur en supprimant la classe qui le masquait
+                    }
+                    break;
 
-				case 200:
-					// Connexion réussie, on passe à la lecture du corps de la réponse
-					console.log("Authentification réussie.");
-					return response.json(); // Renvoie les données de réponse (token, userId)
-					break;
-			}
-		})
-		.then(function(data) {
-			// Vérifie que les données ont bien été récupérées avant d'agir
-			if (!data) return;
+                case 200:
+                    console.log("Authentification réussie.");                                           // Affiche un message dans la console si l'authentification est correcte
+                    data = await response.json();                                                       // Parse le corps de la réponse en JSON pour récupérer les données (token, id)
+                    break;
 
-			// Affiche les données reçues dans la console (facultatif pour debug)
-			console.log(data);
+                default:
+                    alert("Erreur inconnue!");                                                          // Gère les cas de statuts non prévus
+                    break;
+            }
 
-			// Stocke le token et l'identifiant de l'utilisateur dans le localStorage
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('userId', data.userId);
+            if (!data) return;                                                                          // Arrête l'exécution si aucune donnée n’a été reçue (échec de la connexion)
 
-			// Redirige l'utilisateur vers la page d'accueil ou tableau de bord
-			location.href = 'index.html';
-		})
-		.catch(function(err) {
-			// Capture et affiche les erreurs réseau ou JavaScript
-			console.log(err);
-		});
-	});
+            console.log(data);                                                                          // Affiche les données de réponse (utile pour le débogage)
+
+            localStorage.setItem('token', data.token);                                                  // Stocke le token dans le localStorage du navigateur pour maintenir la session
+
+            localStorage.setItem('userId', data.userId);                                                // Stocke l’identifiant de l’utilisateur pour une éventuelle réutilisation
+
+            location.href = 'index.html';                                                               // Redirige l’utilisateur vers la page d’accueil
+        } catch (err) {                                                                                 // Capture les erreurs potentielles (connexion impossible, serveur éteint, etc.)
+
+            console.log(err);                                                                           // Affiche l’erreur dans la console pour faciliter le débogage
+        }
+    });
+
 });

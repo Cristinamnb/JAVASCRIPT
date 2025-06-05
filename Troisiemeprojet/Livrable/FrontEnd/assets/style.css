@@ -470,6 +470,7 @@ body.connected .only-admin {
 
 .error {
 	color: red;
+    margin: 40px 135px 30px;
 }
 
 .not-error {
