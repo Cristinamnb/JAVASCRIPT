@@ -441,3 +441,11 @@ footer li a {
     margin: auto;
     text-decoration: underline;
 }
+
+.error {
+	color: red;
+}
+
+.not-error {
+	display: none;
+}
