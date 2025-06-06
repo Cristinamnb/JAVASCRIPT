@@ -235,5 +235,56 @@ document.getElementById('button-to-close-second-window').addEventListener('click
 	document.getElementById('submit-new-work').style.backgroundColor = "#A7A7A7";                   // Grise le bouton de soumission (état désactivé par défaut)
 });
 
+// Ouverture de la deuxième fenêtre modale avec le bouton "Ajouter photo"
+document.getElementById('modal-edit-add').addEventListener('click', function(event) {               // Sélectionne le bouton "Ajouter photo" et lui associe un écouteur d'événement au clic
+  event.preventDefault();                                                                           // Empêche le comportement par défaut du lien (rechargement ou redirection)
+  let modalWorks = document.getElementById('modal-works');                                          // Sélectionne la première fenêtre modale (celle des travaux existants)
+  modalWorks.style.display = "none";                                                                // Masque la première fenêtre modale
+  let modalEdit = document.getElementById('modal-edit');                                            // Sélectionne la deuxième fenêtre modale (formulaire d'ajout de photo)
+  modalEdit.style.display = "block";                                                                // Affiche la deuxième fenêtre modale
+});
+
+// Retour à la première fenêtre modale avec la flèche
+document.getElementById('arrow-return').addEventListener('click', function(event) {                 // Sélectionne la flèche de retour et ajoute un écouteur d’événement au clic
+  event.preventDefault();                                                                           // Empêche le comportement par défaut du lien (navigation ou rechargement)
+  let modalWorks = document.getElementById('modal-works');                                          // Sélectionne la première fenêtre modale (galerie des œuvres)
+  modalWorks.style.display = "block";                                                               // Affiche à nouveau la première fenêtre modale
+  let modalEdit = document.getElementById('modal-edit');                                            // Sélectionne la deuxième fenêtre modale (formulaire d’ajout/modification)
+  modalEdit.style.display = "none";                                                                 // Masque la deuxième fenêtre modale
+
+  // Réinitialisation de tous les formulaires dans la modalité de modification
+  if (document.getElementById('form-image-preview') != null) {                                      // Si un aperçu d'image a déjà été ajouté dans le formulaire, on le supprime
+    document.getElementById('form-image-preview').remove();
+  }
+
+  document.getElementById('modal-edit-work-form').reset();                                          // Réinitialise tous les champs du formulaire (titre, image, catégorie, etc.)
+  document.getElementById('photo-add-icon').style.display = "block";                                // Réaffiche l'icône "ajouter une photo"
+  document.getElementById('new-image').style.display = "block";                                     // Réaffiche le bouton permettant de téléverser une nouvelle image
+  document.getElementById('photo-size').style.display = "block";                                    // Réaffiche le texte indiquant la taille maximale de l’image
+  document.getElementById('modal-edit-new-photo').style.padding = "30px 0 19px 0";                  // Rétablit le padding original du bloc contenant le formulaire de photo
+  document.getElementById('submit-new-work').style.backgroundColor = "#A7A7A7";                     // Grise le bouton de soumission pour indiquer qu’il n’est pas encore activé
+});
+
+// Fonction async pour récupérer les catégories et les ajouter au select
+async function loadCategoriesInModal() {                                                            // Fonction asynchrone pour charger dynamiquement les catégories dans le menu déroulant de la modal
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");                           // Envoie une requête à l'API pour récupérer la liste des catégories
+    if (!response.ok) {                                                                             // Si la réponse n'est pas correcte (code différent de 200), une erreur est levée
+      throw new Error("Erreur lors de la récupération des catégories");
+    }
+    const categories = await response.json();                                                       // Transforme la réponse JSON en tableau d'objets JavaScript
+
+    categories.forEach(category => {                                                                // Pour chaque catégorie, on crée une balise <option> à insérer dans le menu déroulant
+      const option = document.createElement('option');                                              // Crée un nouvel élément <option>
+      option.setAttribute('value', category.id);                                                    // Attribue l'ID de la catégorie comme valeur
+      option.textContent = category.name;                                                           // Affiche le nom de la catégorie comme texte visible
+      document.querySelector("select.choice-category").appendChild(option);                         // Sélectionne le <select> avec la classe .choice-category et Ajoute l’<option> créée au menu déroulant
+    });
+  } catch (err) {                                                                                   // En cas d'erreur (réseau, API, JSON), l’erreur est loggée dans la console
+    console.log(err);
+  }
+}
+loadCategoriesInModal();                                                                            // Appelle immédiatement la fonction pour charger les catégories dès que le script est lu
+
 });    
 
