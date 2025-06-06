@@ -1,29 +1,29 @@
 // ----------- Récupération des oeuvres et des catégories ----------- //
 
-const gallery = document.querySelector(".gallery");                        // Sélectionne l'élément gallery dans le DOM
+const gallery = document.querySelector(".gallery");                                                 // Sélectionne l'élément gallery dans le DOM
 
-async function fetchWorks() {                                              // Fonction pour récupérer les travaux depuis l'API
-  try {                                                                    // Envoie une requête GET à l'API pour récupérer les œuvres
+async function fetchWorks() {                                                                       // Fonction pour récupérer les travaux depuis l'API
+  try {                                                                                             // Envoie une requête GET à l'API pour récupérer les œuvres
     const response = await fetch("http://localhost:5678/api/works");
-    const works = await response.json();                                   // Convertit la réponse en JSON
-    works.forEach(work => {                                                // Pour chaque œuvre reçue, crée dynamiquement une balise <figure>
+    const works = await response.json();                                                            // Convertit la réponse en JSON
+    works.forEach(work => {                                                                         // Pour chaque œuvre reçue, crée dynamiquement une balise <figure>
       const figure = document.createElement("figure");
-      figure.classList.add("work-item", `category-id-${work.categoryId}`); // Ajoute des classes pour permettre le filtrage par catégorie
-      const img = document.createElement("img");                           // Crée l'image de l'œuvre
+      figure.classList.add("work-item", `category-id-${work.categoryId}`);                          // Ajoute des classes pour permettre le filtrage par catégorie
+      const img = document.createElement("img");                                                    // Crée l'image de l'œuvre
       img.src = work.imageUrl;
       img.alt = work.title;
-      const caption = document.createElement("figcaption");                // Crée la légende (titre) de l'œuvre
+      const caption = document.createElement("figcaption");                                         // Crée la légende (titre) de l'œuvre
       caption.innerText = work.title;
-      figure.appendChild(img);                                             // Ajoute l'image et la légende à la figure
+      figure.appendChild(img);                                                                      // Ajoute l'image et la légende à la figure
       figure.appendChild(caption);
-      gallery.appendChild(figure);                                         // Ajoute la figure complète à la galerie
+      gallery.appendChild(figure);                                                                  // Ajoute la figure complète à la galerie
     });
 
-  } catch (error) {                                                        // Gère les erreurs en cas d'échec de la requête
+  } catch (error) {                                                                                 // Gère les erreurs en cas d'échec de la requête
     console.error("Erreur lors du chargement des travaux :", error);
   }
 }
-fetchWorks();                                                              // Appelle la fonction pour afficher les travaux dès le chargement
+fetchWorks();                                                                                       // Appelle la fonction pour afficher les travaux dès le chargement
 
 
 // ----------- Partie filtres par catégories ----------- //
@@ -70,7 +70,7 @@ fetchAndDisplayCategories();                                                    
 
 // ----------- Partie connexion/déconnexion ----------- //
 // Gestion du TOKEN
-document.addEventListener('DOMContentLoaded', async function() {                                    // Quand tout le DOM est chargé, on exécute cette fonction asynchrone
+document.addEventListener('DOMContentLoaded', function() {                                          // Quand tout le DOM est chargé, on exécute cette fonction
   if(localStorage.getItem('token') != null && localStorage.getItem('userId') != null) {             // Vérifie si un token et un userId sont stockés dans localStorage (utilisateur connecté)
     document.querySelector('body').classList.add('connected');                                      // Ajoute la classe 'connected' au body pour modifier l’apparence en mode admin
     let topBar = document.getElementById('top-bar');                                                // Sélectionne la barre du haut (top bar)
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async function() {                
     introduction.style.marginTop = "-50px";                                                         // Remonte l’introduction vers le haut (-50px de margin-top)
   }
 
-// Click sur déconnection pour se déconnecter
+  // Click sur déconnection pour se déconnecter
   document.getElementById('nav-logout').addEventListener('click', async function(event) {           // Ajoute un écouteur d'événement sur le bouton déconnexion
     event.preventDefault();                                                                         // Empêche le comportement par défaut du clic (ex: navigation)
     localStorage.removeItem('userId');                                                              // Supprime userId du localStorage pour déconnecter l’utilisateur
@@ -96,5 +96,144 @@ document.addEventListener('DOMContentLoaded', async function() {                
     let space = document.getElementById('space-only-admin');                                        // Sélectionne l’espace réservé à l’admin
     space.style.paddingBottom = "0";                                                                // Remet le padding bottom à 0
   });
+
+// ----------- Partie des modales ----------- //
+// Fonction asynchrone pour charger les œuvres dans la modale admin
+// Déclaration d'une fonction asynchrone pour charger les œuvres dans la modale
+async function loadWorksIntoModal() {
+	try {
+		const response = await fetch("http://localhost:5678/api/works");                            // Envoie une requête GET à l'API pour récupérer les œuvres
+		if (!response.ok) throw new Error("Erreur lors du chargement des œuvres.");                 // Vérifie si la réponse n’est pas correcte, et lève une erreur personnalisée si c’est le cas
+		const works = await response.json();                                                        // Convertit la réponse JSON en tableau d’objets (chaque œuvre)
+
+        // Suppression des anciennes œuvres
+		document.querySelector('#modal-works.modal-gallery .modal-content').innerText = '';         // Supprime le contenu actuel de la modale pour éviter les doublons
+		works.forEach(work => {                                                                     // Parcourt toutes les œuvres récupérées
+			const figure = document.createElement('figure');                                        // Crée un élément <figure> pour représenter visuellement l’œuvre
+			figure.className = `work-item category-id-0 category-id-${work.categoryId}`;            // Ajoute des classes pour catégoriser l’œuvre par son ID de catégorie
+			figure.id = `work-item-popup-${work.id}`;                                               // Attribue un ID unique à l’élément figure (spécifique à la modale popup)
+			const img = document.createElement('img');                                              // Crée un élément <img> pour afficher l’image de l’œuvre
+			img.src = work.imageUrl;                                                                // Définit l’URL de l’image de l’œuvre
+			img.alt = work.title;                                                                   // Définit le texte alternatif de l’image (important pour l’accessibilité)
+			figure.appendChild(img);                                                                // Ajoute l’image à l’intérieur du bloc figure
+			const caption = document.createElement('figcaption');                                   // Crée un élément <figcaption> pour ajouter la légende "éditer"
+			caption.textContent = 'éditer';                                                         // Définit le texte du figcaption
+			figure.appendChild(caption);                                                            // Ajoute le figcaption au bloc figure
+			const dragIcon = document.createElement('i');                                           // Crée une icône de déplacement (utilisable pour un éventuel drag & drop)
+			dragIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right', 'cross');            // Ajoute les classes Font Awesome pour l'icône de déplacement
+			figure.appendChild(dragIcon);                                                           // Ajoute l'icône de déplacement au bloc figure
+			const trashIcon = document.createElement('i');                                          // Crée une icône de corbeille pour supprimer l’œuvre
+			trashIcon.classList.add('fa-solid', 'fa-trash-can', 'trash');                           // Ajoute les classes Font Awesome pour l’icône de suppression
+			figure.appendChild(trashIcon);                                                          // Ajoute l’icône de suppression au bloc figure
+
+
+			// Suppression d'une œuvre
+            trashIcon.addEventListener('click', async function (event) {                            // Ajoute un écouteur d'événement "click" sur l’icône de corbeille
+                event.preventDefault();                                                             // Empêche le comportement par défaut du lien ou bouton (au cas où)
+                if (confirm("Voulez-vous supprimer cet élément ?")) {                               // Demande confirmation à l’utilisateur avant de supprimer
+                    try {                                                                           
+                        const deleteResponse = await fetch(`http://localhost:5678/api/works/${work.id}`, { // Envoie une requête DELETE à l’API pour supprimer l’œuvre
+                            method: 'DELETE',                                                       // Méthode HTTP pour la suppression
+                            headers: {
+                                'Content-Type': 'application/json',                                 // Indique que le corps de la requête est au format JSON
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')          // Envoie le token d’authentification stocké localement pour valider les droits d’accès
+                            }
+                        });
+
+                        switch (deleteResponse.status) {                                            // Analyse la réponse en fonction du code HTTP retourné
+                            case 500:                                                               // Erreurs serveur (interne ou indisponibilité)
+                            case 503:
+                                alert("Comportement inattendu!");
+                                break;
+
+                            case 401:                                                               // Erreur d’authentification (token invalide ou inexistant)
+                                alert("Suppression impossible!");
+                                break;
+
+                            case 200:                                                               
+                            case 204:
+                                console.log("Projet supprimé.");                                    // Succès : suppression confirmée
+                                document.getElementById(`work-item-${work.id}`)?.remove();          // Supprime l’œuvre de la galerie principale (si présente)
+                                document.getElementById(`work-item-popup-${work.id}`)?.remove();    // Supprime l’œuvre de la modale (si présente)
+                                break;
+
+                            default:
+                                alert("Erreur inconnue!");                                          // Si aucun des cas prévus ne s’applique
+                        }
+                    } catch (err) {
+                        console.error("Erreur lors de la suppression :", err);                      // Gère toute autre erreur inattendue pendant la requête
+                    }
+                }
+            });
+
+			document.querySelector("div.modal-content").appendChild(figure);                        // Ajoute le bloc <figure> (contenant l’image, les icônes et la légende) à l'intérieur de la galerie de la modale
+
+			// Affichage de la modale
+			document.getElementById('modal').style.display = "flex";                                // Affiche la modale principale en la rendant visible en mode "flex"
+			document.getElementById('modal-works').style.display = "block";                         // Affiche la section des œuvres à l’intérieur de la modale
+		});                                                                                         // Fin de la boucle forEach – toutes les œuvres sont maintenant affichées dans la modale
+	} catch (error) {
+		console.error("Erreur lors de la récupération des œuvres :", error);                        // Gère les erreurs survenues pendant la récupération ou l'affichage des œuvres
+	}
+}
+
+// Écouteur pour le bouton "modifier"
+document.getElementById('update-works').addEventListener('click', function (event) {                // Ajoute un écouteur d'événement au clic sur le bouton avec l'ID "update-works"
+	event.preventDefault();	                                                                        // Empêche le comportement par défaut du bouton (ex. : soumission d'un formulaire ou navigation)
+	loadWorksIntoModal(); 	                                                                        // Appelle la fonction qui charge et affiche dynamiquement les œuvres dans la modale
 });
+
+// Fermeture des modales
+document.querySelectorAll('#modal-works').forEach(modalWorks => {                                   // Sélectionne tous les éléments avec l'ID 'modal-works' (théoriquement unique) et boucle dessus
+	modalWorks.addEventListener('click', event => event.stopPropagation());                         // Empêche la propagation du clic à l'extérieur de la modale pour éviter une fermeture accidentelle
+
+	document.querySelectorAll('#modal-edit').forEach(modalEdit => {                                	// Sélectionne tous les éléments avec l'ID 'modal-edit' (également supposé unique) et boucle dessus
+		modalEdit.addEventListener('click', event => event.stopPropagation()); 		                // Empêche la propagation du clic dans la deuxième modale (édition) pour éviter sa fermeture
+
+		document.getElementById('modal').addEventListener('click', function (event) { 	        	// Ajoute un écouteur d’événement sur le fond noir semi-transparent de la modale
+			event.preventDefault();                                                                 // Empêche le comportement par défaut (pas strictement nécessaire ici)
+			document.getElementById('modal').style.display = "none";                                // Cache l'overlay de la modale
+			document.getElementById('modal-works').style.display = "none";                          // Cache la première fenêtre modale (galerie)
+			document.getElementById('modal-edit').style.display = "none";                           // Cache la deuxième fenêtre modale (édition d'œuvre)
+
+			if (document.getElementById('form-image-preview')) {                                    // Si un aperçu d'image est présent, on le supprime du DOM
+				document.getElementById('form-image-preview').remove();                             
+			}
+
+			document.getElementById('modal-edit-work-form').reset();                                // Réinitialise tous les champs du formulaire d’ajout/modification d’œuvre
+			document.getElementById('photo-add-icon').style.display = "block";                      // Réaffiche l’icône pour ajouter une photo
+			document.getElementById('new-image').style.display = "block";                           // Réaffiche le bouton pour choisir une nouvelle image
+			document.getElementById('photo-size').style.display = "block";                          // Réaffiche le texte indiquant la taille maximale autorisée pour la photo
+			document.getElementById('modal-edit-new-photo').style.padding = "30px 0 19px 0";        // Réinitialise le padding autour de la zone d’ajout de photo dans la modale
+			document.getElementById('submit-new-work').style.backgroundColor = "#A7A7A7";           // Réinitialise la couleur du bouton de soumission (désactivé/grisé)
+		});
+	});
+});
+
+// Fermeture avec le bouton "x" - première modale
+document.getElementById('button-to-close-first-window').addEventListener('click', function (event) { // Ajoute un écouteur d'événement sur le bouton de fermeture de la première fenêtre modale (galerie)
+	event.preventDefault();                                                                         // Empêche le comportement par défaut du bouton (par exemple, le rechargement de la page si c'est un lien)
+	document.getElementById('modal').style.display = "none"; 	                                    // Cache l'overlay général de la modale
+	document.getElementById('modal-works').style.display = "none";                                	// Cache la première modale (celle qui contient la galerie d’œuvres)
+});
+
+// Fermeture avec le bouton "x" - deuxième modale
+document.getElementById('button-to-close-second-window').addEventListener('click', function (event) { // Ajoute un écouteur d'événement sur le bouton de fermeture de la deuxième fenêtre modale (formulaire d'ajout/modification)
+	event.preventDefault();                                                                        	// Empêche le comportement par défaut du bouton (comme recharger la page si c'est un lien)
+	document.getElementById('modal').style.display = "none";                                     	// Cache la superposition générale de la modale
+	document.getElementById('modal-edit').style.display = "none"; 	                                // Cache la deuxième modale (celle d'édition ou d'ajout de projet)
+
+	if (document.getElementById('form-image-preview')) { 	                                        // Si un aperçu d'image a été ajouté dans le formulaire, on le supprime
+		document.getElementById('form-image-preview').remove();
+	}
+
+	document.getElementById('modal-edit-work-form').reset();                                        // Réinitialise tous les champs du formulaire d'ajout/modification d’œuvre
+	document.getElementById('photo-add-icon').style.display = "block";	                            // Réaffiche l'icône d'ajout de photo
+	document.getElementById('new-image').style.display = "block";                                   // Réaffiche le champ d'ajout de nouvelle image
+	document.getElementById('photo-size').style.display = "block";                                 	// Réaffiche le texte indiquant la taille maximale autorisée
+	document.getElementById('modal-edit-new-photo').style.padding = "30px 0 19px 0";               	// Réinitialise le padding du conteneur d'image de la modale
+	document.getElementById('submit-new-work').style.backgroundColor = "#A7A7A7";                   // Grise le bouton de soumission (état désactivé par défaut)
+});
+
+});    
 
